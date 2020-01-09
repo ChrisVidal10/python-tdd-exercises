@@ -1,3 +1,4 @@
+VOWELS = ['a','e','i','o','u','y']
 
 def reverse_list(l):
     """
@@ -17,7 +18,7 @@ def reverse_string(s):
     """
     Reverses order of characters in string s.
     """
-    return None
+    return s[::-1]
 
 
 def test_reverse_string():
@@ -31,7 +32,7 @@ def is_english_vowel(c):
     Returns True if c is an english vowel
     and False otherwise.
     """
-    return None
+    return True if c.lower() in VOWELS else False
 
 
 def test_is_english_vowel():
@@ -58,7 +59,10 @@ def count_num_vowels(s):
     """
     Returns the number of vowels in a string s.
     """
-    return None
+    sum = 0
+    for vowel in VOWELS:
+        sum += s.lower().count(vowel)
+    return sum
 
 
 def test_count_num_vowels():
@@ -80,7 +84,15 @@ def histogram(l):
     """
     Converts a list of integers into a simple string histogram.
     """
-    return None
+    res = str()
+    cont = 0
+    for digit in l:
+        if digit > 0 and cont > 0:
+            res+= '\n'
+        for i in range(digit):
+            res += '#'
+        cont += 1
+    return res
 
 
 def test_histogram():
