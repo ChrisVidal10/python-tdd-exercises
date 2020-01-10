@@ -6,11 +6,12 @@ python:
 
 install:
   - pip install pytest-cov
-  - pip install python-coveralls
+  - pip install coveralls
 
 script:
   - py.test -vv exercises.py --cov exercises
-  - coveralls
-
+  - coverage run --source=exercises exercises.py test
+  - COVERALLS_REPO_TOKEN=tGSdG5Qcd2dcQa2oQN9GlJkL50wFZPv1j coveralls
+  
 notifications:
   email: false
