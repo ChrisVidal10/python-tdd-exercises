@@ -106,7 +106,7 @@ def get_word_lengths(s):
     Returns a list of integers representing
     the word lengths in string s.
     """
-    return None
+    return [len(word) for word in s.split()]
 
 
 def test_get_word_lengths():
@@ -121,7 +121,9 @@ def find_longest_word(s):
     Returns the longest word in string s.
     In case there are several, return the first.
     """
-    return None
+    text_list = s.split()
+    text_list.sort(reverse=True, key=lambda x:len(x))
+    return text_list[0]
 
 
 def test_find_longest_word():
@@ -138,7 +140,15 @@ def validate_dna(s):
     Return True if the DNA string only contains characters
     a, c, t, or g (lower or uppercase). False otherwise.
     """
-    return None
+    dna_characters = ['a','c','t','g']
+    dna_ok = False
+    for i in range(len(s)):
+        if not s[i].lower() in dna_characters:
+            dna_ok = False
+            break
+        else:
+            dna_ok = True
+    return dna_ok
 
 
 def test_validate_dna():
@@ -148,14 +158,20 @@ def test_validate_dna():
 
 
 # ------------------------------------------------------------------------------
-
 def base_pair(c):
     """
     Return the corresponding character (lowercase)
     of the base pair. If the base is not recognized,
     return 'unknown'.
     """
-    return None
+    DNA_MAP = {
+        'a': 't',
+        't': 'a',
+        'g': 'c',
+        'c': 'g',
+    }
+    res = DNA_MAP.get(c.lower())
+    return res if res else 'unknown'
 
 
 def test_base_pair():
@@ -178,7 +194,7 @@ def transcribe_dna_to_rna(s):
     Return string s with each letter T replaced by U.
     Result is always uppercase.
     """
-    return None
+    return s.upper().replace('T','U')
 
 
 def test_transcribe_dna_to_rna():
@@ -193,8 +209,14 @@ def get_complement(s):
     Return the DNA complement in uppercase
     (A -> T, T-> A, C -> G, G-> C).
     """
-    return None
-
+    DNA_MAP = {
+        'A': 'T',
+        'T': 'A',
+        'G': 'C',
+        'C': 'G',
+    }
+    return ''.join(list(map(lambda x: DNA_MAP[x], s.upper())))
+    
 
 def test_get_complement():
     assert get_complement('CCGGAAGAGCTTACTTAG') == 'GGCCTTCTCGAATGAATC'
@@ -208,7 +230,7 @@ def get_reverse_complement(s):
     Return the reverse complement of string s
     (complement reversed in order).
     """
-    return None
+    return get_complement(s)[::-1]
 
 
 def test_get_reverse_complement():
@@ -222,7 +244,7 @@ def remove_substring(substring, string):
     """
     Returns string with all occurrences of substring removed.
     """
-    return None
+    return string.upper().replace(substring, '')
 
 
 def test_remove_substring():
@@ -240,7 +262,10 @@ def get_position_indices(triplet, dna):
     in a DNA sequence. We start counting from 0
     and jump by 3 characters from one position to the next.
     """
-    return None
+    dna_sequence = 3
+    dna_list = [ dna[i:i+dna_sequence] for i in range(0, len(dna), dna_sequence)]
+    dna_sequence_position_list = [index for index,value in enumerate(dna_list) if triplet == value]
+    return dna_sequence_position_list
 
 
 def test_get_position_indices():
@@ -259,7 +284,12 @@ def get_3mer_usage_chart(s):
     The list is alphabetically sorted by the name
     of the 3-mer.
     """
-    return None
+    a = [s[i:i+3] for i in range(0, len(s), 1)]
+    a = list(set(a))
+    b = [i for i in a if len(i) == 3]
+    b = [(i,s.count(i,0,len(s))) for i in b]
+    b.sort(key=lambda x: x[0])
+    return b
 
 
 def test_get_3mer_usage_chart():
@@ -290,7 +320,10 @@ def read_column(file_name, column_number):
     Reads column column_number from file file_name
     and returns the values as floats in a list.
     """
-    return None
+    with open(file_name) as file:
+        content = file.readlines()
+        res = [float(x.split()[column_number-1]) for x in content]
+    return res
 
 
 def test_read_column():
@@ -328,7 +361,14 @@ def character_statistics(file_name):
     Use the isalpha() method to figure out
     whether the character is in the alphabet.
     """
-    return None
+    stats = list()
+    with open(file_name) as file:
+        content = file.read().lower()
+        content_list = list(set(list(content)))
+        stats = [(char, content.count(char, 0, len(content))) for char in content_list if not char == ' ']
+        stats.sort(key=lambda x: x[1])
+        stats = (stats[-1][0], stats[0][0])
+    return stats
 
 
 def test_character_statistics():
@@ -406,4 +446,5 @@ def pythagorean_triples(n):
 # ------------------------------------------------------------------------------
 
 def test_pythagorean_triples():
-    pass  # so far we do not test anything, check also test coverage
+    assert pythagorean_triples(6) == [(3, 4, 5)]
+    assert pythagorean_triples(11) == [(3, 4, 5),(6,8,10)]
