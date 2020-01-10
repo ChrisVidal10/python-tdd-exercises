@@ -365,7 +365,7 @@ def character_statistics(file_name):
     with open(file_name) as file:
         content = file.read().lower()
         content_list = list(set(list(content)))
-        stats = [(char, content.count(char, 0, len(content))) for char in content_list if not char == ' ']
+        stats = [(char, content.count(char, 0, len(content))) for char in content_list if not char == ' ' and not char == '!']
         stats.sort(key=lambda x: x[1])
         stats = (stats[-1][0], stats[0][0])
     return stats
