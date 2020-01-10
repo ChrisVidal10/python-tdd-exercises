@@ -11,7 +11,7 @@ install:
 script:
   - py.test -vv exercises.py --cov exercises
   - coverage run --source=exercises exercises.py test
-  - COVERALLS_REPO_TOKEN=tGSdG5Qcd2dcQa2oQN9GlJkL50wFZPv1j coveralls
-  
+  - COVERALLS_REPO_TOKEN=hIegXMxsJms1zuuJ4vtkN4VvWtng1qyzL coveralls
+
 notifications:
   email: false
